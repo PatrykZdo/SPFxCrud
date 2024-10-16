@@ -1,0 +1,21 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "nodeVersion": "16.13.2",
+    "sdksVersions": {
+      "@microsoft/microsoft-graph-client": "3.0.2",
+      "@microsoft/teams-js": "2.12.0"
+    },
+    "version": "1.18.2",
+    "libraryName": "crud-test",
+    "libraryId": "a1c266e1-1d61-4351-9708-75c137e7681d",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "CrudTest",
+    "solutionShortDescription": "CrudTest description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart"
+  }
+}
