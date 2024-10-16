@@ -19,7 +19,7 @@ export default class CrudTestWebPart extends BaseClientSideWebPart<ICrudTestWebP
       const dropDownOptions: IDropdownOption[] = choices.map(choice => ({key: choice, text:choice}));
       const element: React.ReactElement<ICrudTestProps> = React.createElement(CrudTest,{spcontext: this.context, choices: dropDownOptions});
       ReactDom.render(element, this.domElement);
-    })
+    }).catch((e)=>{console.log(e)});
 
     
   }

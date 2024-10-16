@@ -81,7 +81,7 @@ const CrudTest = (props:ICrudTestProps): React.ReactElement => {
 //CRUD SECTION
 
 //GET ALL PRODUCTS FROM LIST
-  const getAllProductsFromList = async() =>{
+  const getAllProductsFromList = async()=>{
     try{
       const productsList = await sp.web.lists.getByTitle("Products").items.select("Id", "Title", "Description", "Quantity", "Category", "DateOfUpdata") ();
 
@@ -106,7 +106,7 @@ const CrudTest = (props:ICrudTestProps): React.ReactElement => {
   const addNewProductToList = async() => {
 
     if (!validateFieldsAddDialog()) {
-      console.log("Required fields in add dialog are empty")
+      console.log("Required fields in add dialog ar'e empty")
       return;
     }
 
@@ -388,6 +388,13 @@ React.useEffect(() =>{
   getAllProductsFromList();
 },[reload]);
 
+React.useEffect(() => {
+  console.log('Komponent zamontowany');
+  return () => {
+    console.log('Komponent demontowany');
+  };
+}, []);
+
 
 
     return (
@@ -510,7 +517,7 @@ React.useEffect(() =>{
           </DialogFooter>
         </Dialog>
       </div>
-      <div className='centered-div' >
+      <div className='centeredDiv' >
         <Dialog
           
           hidden={isDeleteDialogHidden}
