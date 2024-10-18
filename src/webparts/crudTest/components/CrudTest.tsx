@@ -7,14 +7,20 @@ import styles from './CrudTest.module.scss';
 
 import { getSP, SPFI} from '../../../pnpjsConfig';
 
-import { DefaultButton, DetailsList, DetailsListLayoutMode, Dialog, DialogFooter, DialogType, Dropdown, IColumn, IconButton, Label, PrimaryButton, SelectionMode, TextField } from '@fluentui/react';
+import { DefaultButton, DetailsList, DetailsListLayoutMode, Dialog, DialogFooter, DialogType, Dropdown, IColumn, IconButton, IDropdownOption, Label, PrimaryButton, SelectionMode, TextField } from '@fluentui/react';
 import { initializeIcons } from '@fluentui/font-icons-mdl2';
+import { IFieldInfo } from '@pnp/sp/fields/types';
+import "@pnp/sp/webs";
+import "@pnp/sp/lists"
+import "@pnp/sp/fields";
 
 
 const CrudTest = (props:ICrudTestProps): React.ReactElement => {
   
     initializeIcons();
     const sp:SPFI = getSP(props.spcontext);
+
+    const [categoryChoices, setCategoryChoices]= React.useState<IDropdownOption[]>([]);
 
     const [reload, setReload] = React.useState<boolean>(false);
     const [products, setProducts] = React.useState<Array<IProduct>>([]); 
@@ -78,8 +84,24 @@ const CrudTest = (props:ICrudTestProps): React.ReactElement => {
       }
     );
     
-//CRUD SECTION
+// GET CATEGORY CHOICES FROM LIST
+const getCategoryChoiceFieldValue = async() => {
+  try{
+    const field2: IFieldInfo = await sp.web.lists.getByTitle("Products").fields.getByInternalNameOrTitle("Category")();
+    const dropdownOptions: IDropdownOption[] = field2.Choices?.map((choice: string) => ({
+      key: choice, 
+      text: choice  
+    })) || [];
+    setCategoryChoices(dropdownOptions);
+    console.log("Get all Category Choices successfully");
+  }
+  catch(e){
+    console.log(e);
+  }
+}
 
+
+//CRUD SECTION
 //GET ALL PRODUCTS FROM LIST
   const getAllProductsFromList = async()=>{
     try{
@@ -96,8 +118,6 @@ const CrudTest = (props:ICrudTestProps): React.ReactElement => {
 
     }catch(e){
       console.log(e)
-    }finally{
-      console.log("List Products fetched", products);
     }
   }
 
@@ -386,6 +406,7 @@ function handelEditedCategory(event: React.FormEvent<HTMLDivElement>, option?: {
 //useEffects
 React.useEffect(() =>{
   getAllProductsFromList();
+  getCategoryChoiceFieldValue();
 },[reload]);
 
 React.useEffect(() => {
@@ -452,7 +473,7 @@ React.useEffect(() => {
             <Dropdown
               required
               className={`${categoryError ? styles.errorField : styles.dropdown}`}
-              options={props.choices}
+              options={categoryChoices}
               placeholder='Category'
               onChange={handelNewCategory}
               selectedKey={newCategory}   
@@ -504,7 +525,7 @@ React.useEffect(() => {
             <Dropdown
               required
               className= {`${categoryError ? styles.errorField : styles.dropdown}`}
-              options={props.choices}
+              options={categoryChoices}
               placeholder='Category'
               onChange={handelEditedCategory}
               selectedKey={editedCategory}
